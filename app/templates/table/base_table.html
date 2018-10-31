@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+
+{% block main %}
+<section id="main-content">
+    <section class="wrapper">
+        {% if tb %}
+            <div class="col-md-12">
+                <div class="content-panel">
+                {% if tb.name %}
+                    <h4><i class="fa fa-angle-right"></i> {{ tb.name }}</h4>
+                {% endif %}
+                <hr>
+                <table class="table">
+                    {% if tb.head %}
+                    <thead>
+                    <tr>
+                        {% for h in tb.head %}
+                            <th> {{ h }} </th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    {% endif %}
+
+                    {% if tb.rows %}
+                    <tbody>
+                        {% for row in tb.rows %}
+                        <tr>
+                            {% for i in row %}
+                                <th> {{ i }} </th>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        {% endif %}
+    </section>
+</section>
+{% endblock%}
+

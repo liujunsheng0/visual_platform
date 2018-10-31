@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+
+{% block main %}
+<section id="main-content">
+    <section class="wrapper site-min-height">
+        {% if title %}
+            <h3><i class="fa fa-angle-right"></i>  {{ title }} </h3>
+        {% endif %}
+        <!-- page start-->
+        <div class="content-panel">
+            <!--<h4><i class="fa fa-angle-right"></i>  XChart Example</h4>-->
+            {% if size %}
+                <div id="echarts_id" style="width:{{size[0]}};height:{{size[1]}};"></div>
+            {% else %}
+                <div id="echarts_id" style="width:80%;height:600px;"></div>
+            {% endif %}
+        </div>
+        <!-- page end-->
+    </section>
+</section>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="//echarts.baidu.com/dist/echarts.js"></script>
+    <script>
+        $(document).ready(function(){
+            var chart = echarts.init(document.getElementById("echarts_id"));
+            chart.setOption({{ option|tojson}});
+        })
+    </script>
+{% endblock %}

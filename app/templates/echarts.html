@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {{ title }} </title>
+    <script type="text/javascript" src="//echarts.baidu.com/dist/echarts.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+        body{
+            text-align: center;
+            background: #F9F0DA;
+         }
+        .table-class table{
+            margin: 0px auto;
+            width: 80%;
+            height: 100px;
+            border-width: 5px;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<h3> {{ title }} </h3>
+
+{% if table_first %}
+<!--table格式 ['title', ['x', 'y'], [[1,2], [3,4]]]-->
+{% if tables %}
+{% for title, header, rows in tables %}
+<div class="table-class">
+    <h3 align="center" > {{ title }} </h3>
+    <table cellpadding="10" cellspacing="10" width="100%" style="border:0px solid #9AC0CD;" class="">
+        {% if header|length > 0 %}
+        <tr style="background-color: #f7f7f7">
+            {% for i in header %}
+            <th> {{ i }} </th>
+            {% endfor %}
+        </tr>
+        {% endif %}
+
+        {% for tds in rows %}
+        <tr style="background-color: #f7f7f7">
+            {% for td in tds %}
+            <th> {{ td }} </th>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endfor %}
+<br/><br/>
+{% endif %}
+{% if bars %}
+{% for bar1 in bars %}
+<div id='{{ bar1.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/><br/>
+{% endfor %}
+{% endif %}
+
+{% if pies %}
+{% for pie1 in pies %}
+<div id='{{ pie1.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/><br/>
+{% endfor %}
+{% endif %}
+
+{% if scatters %}
+{% for scatter1 in scatters %}
+<div id='{{ scatter1.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/><br/>
+{% endfor %}
+{% endif %}
+
+{% if lines %}
+{% for line1 in lines %}
+<div id='{{ line1.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/><br/>
+{% endfor %}
+{% endif %}
+
+{% if multiple_lines %}
+{% for mult1 in multiple_lines %}
+<div id='{{ mult1.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/><br/>
+{% endfor %}
+{% endif %}
+
+{% if downloads %}
+{% for name, path in downloads %}
+<h5><a href="{{ url_for(download_func_name, path=path)|safe }}">{{ name }}</a></h5>
+{% endfor %}
+{% endif %}
+
+{% else %}
+
+{% if bars %}
+{% for bar in bars %}
+<div id='{{ bar.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/>
+{% endfor %}
+{% endif %}
+
+{% if pies %}
+{% for pie in pies %}
+<div id='{{ pie.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/>
+{% endfor %}
+{% endif %}
+
+{% if scatters %}
+{% for scatter in scatters %}
+<div id='{{ scatter.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/>
+{% endfor %}
+{% endif %}
+
+{% if lines %}
+{% for line in lines %}
+<div id='{{ line.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/>
+{% endfor %}
+{% endif %}
+
+{% if multiple_lines %}
+{% for mult in multiple_lines %}
+<div id='{{ mult.cid }}' style="width: 90%;height:600px;margin: 0 auto;"></div><br/>
+{% endfor %}
+{% endif %}
+
+{% if downloads %}
+{% for name, path in downloads %}
+<h5><a href="{{ url_for(download_func_name, path=path)|safe }}">{{ name }}</a></h5>
+{% endfor %}
+{% endif %}
+
+<!--table格式 ['title', ['x', 'y'], [[1,2], [3,4]]]-->
+{% if tables %}
+{% for title, header, rows in tables %}
+<div class="table-class">
+    <h3 align="center" > {{ title }} </h3>
+    <table cellpadding="10" cellspacing="10" width="100%" style="border:0px solid #9AC0CD;" class="">
+        {% if header|length > 0 %}
+        <tr style="background-color: #f7f7f7">
+            {% for i in header %}
+            <th> {{ i }} </th>
+            {% endfor %}
+        </tr>
+        {% endif %}
+
+        {% for tds in rows %}
+        <tr style="background-color: #f7f7f7">
+            {% for td in tds %}
+            <th> {{ td }} </th>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endfor %}
+{% endif %}
+{% endif %}
+
+<script>
+    function echarts_multiple_line(cid, title, legend_data, xAxis, x_name, y_name, series_data) {
+        var line = echarts.init(document.getElementById(cid));
+        var option = {
+            title : { text: title, x: 'center' },
+            tooltip : { trigger: 'axis' },
+            legend: { data: legend_data, y:'top', x:'left', orient: 'vertical'},
+            grid: {
+                left: '15%',
+                right: '10%',
+                bottom: '5%',
+                containLabel: true
+            },
+            toolbox : {
+                show : false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    name: x_name,
+                    type : 'category',
+                    boundaryGap : false,
+                    data : xAxis
+                }
+            ],
+            yAxis : [
+                {
+                    name: y_name,
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series : series_data
+        };
+        line.setOption(option);
+    }
+
+    function echarts_line(cid, title, legend_data, xAxis, x_name, y_name, series_data) {
+        var line = echarts.init(document.getElementById(cid));
+        var option = {
+            title : { text: title, x: 'center' },
+            tooltip : { trigger: 'axis' },
+            legend: { data: legend_data , y:'top', x:'left', orient: 'vertical'},
+            grid: {
+                left: '15%',
+                right: '10%',
+                bottom: '5%',
+                containLabel: true
+            },
+            toolbox : {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    name: x_name,
+                    type : 'category',
+                    boundaryGap : false,
+                    data : xAxis
+                }
+            ],
+            yAxis : [
+                {
+                    name: y_name,
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series : [
+                {
+                    name: title,
+                    type: 'line',
+                    data: series_data,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+            ]
+        };
+        line.setOption(option);
+    }
+    function echarts_scatter_or_bar(cid, title, xAxis_data, x_name, y_name, legend_data, series_data, type) {
+        var scatter = echarts.init(document.getElementById(cid));
+        var option = {
+            title: { text: title, x: 'center'},
+            tooltip: {},
+            grid: {
+                left: '15%',
+                right: '10%',
+                bottom: '5%',
+                containLabel: true
+            },
+            legend: { data: legend_data , y:'top', x:'left', orient: 'vertical'},
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataZoom : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                    }
+            },
+            xAxis: {
+                name: x_name,
+                data: xAxis_data
+            },
+            yAxis: {name: y_name},
+            series: [{
+                markPoint : {
+                    data : [{type : 'max', name: '最大值'}, {type : 'min', name: '最小值'} ] },
+                    markLine : { data : [{type : 'average', name: '平均值'}]},
+                    name: title,
+                    type: type,
+                    data: series_data
+                }]
+        };
+        scatter.setOption(option);
+    }
+    function echarts_pie(cid, title, legend_data, series_data) {
+        var myChart = echarts.init(document.getElementById(cid));
+        var option = {
+            title : {
+                text: title,
+                x:'center'
+            },
+            grid: {
+                left: '15%',
+                right: '10%',
+                bottom: '5%',
+                containLabel: true
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)" // 输出格式, 不用理会
+            },
+            // 图标中的图形注释
+            legend : {data: legend_data, y:'top', x:'left', orient: 'vertical' },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+                {
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'outer',
+                            formatter: '{b}',//模板变量有 {a}、{b}、{c}、{d}，分别表示系列名，数据名，数据值，百分比。{d}数据会根据value值计算百分比
+                            textStyle : {
+                                align : 'center',
+                                baseline : 'middle',
+                                fontFamily : '微软雅黑',
+                                fontSize : 10,
+                                fontWeight : 'bolder'
+                            }
+                        },
+                    },
+                    name: title,
+                    type:'pie',
+                    radius : '80%',
+                    center: ['50%', '60%'],
+                    data: series_data
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
+</script>
+
+<script>
+    $(document).ready(function(){
+        {% if pies %}
+        {% for p in pies %}
+            echarts_pie("{{ p.cid }}", "{{ p.title }}", {{ p.legend_data|tojson }}, {{ p.series_data|tojson }});
+        {% endfor %}
+        {% endif %}
+
+        {% if scatters %}
+        {% for s in scatters %}
+            echarts_scatter_or_bar("{{ s.cid }}", "{{ s.title }}", {{ s.xAxis|tojson }}, "{{ s.x_name }}", "{{ s.y_name }}",
+                            {{ s.legend_data|tojson }}, {{ s.series_data|tojson }}, 'scatter');
+        {% endfor %}
+        {% endif %}
+
+        {% if bars %}
+        {% for s in bars %}
+            echarts_scatter_or_bar("{{ s.cid }}", "{{ s.title }}", {{ s.xAxis|tojson }}, "{{ s.x_name }}", "{{ s.y_name }}",
+                            {{ s.legend_data|tojson }}, {{ s.series_data|tojson }}, 'bar');
+        {% endfor %}
+        {% endif %}
+
+        {% if lines %}
+        {% for s in lines %}
+            echarts_line("{{ s.cid }}", "{{ s.title }}", {{ s.legend_data|tojson }}, {{ s.xAxis|tojson }},
+                         "{{ s.x_name }}", "{{ s.y_name }}", {{ s.series_data|tojson }});
+        {% endfor %}
+        {% endif %}
+
+        {% if multiple_lines %}
+        {% for s in multiple_lines %}
+            echarts_multiple_line("{{ s.cid }}", "{{ s.title }}", {{ s.legend_data|tojson }}, {{ s.xAxis|tojson }},
+                                  "{{ s.x_name }}", "{{ s.y_name }}", {{ s.series_data|tojson }});
+        {% endfor %}
+        {% endif %}
+
+    })
+</script>
+
+</body>
+</html>
